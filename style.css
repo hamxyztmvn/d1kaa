@@ -639,70 +639,51 @@ video {
 
 /* --- QRIS CONTAINER FIXED --- */
 .qris-container {
-    background: var(--gloss-gradient);
-    padding: 30px;
-    border-radius: 25px;
-    width: 100%;
-    border: 2px solid rgba(255, 255, 255, 0.18);
+    background: #fff;
+    padding: 25px;
+    border-radius: 20px;
     margin-bottom: 25px;
+    width: 100%;
+    max-width: 280px;
+    border: 2px solid rgba(255, 255, 255, 0.18);
     animation: fadeInUp 0.6s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
-}
-
-.qris-wrapper {
-    width: 250px;
-    height: 250px;
-    background: #fff;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
     justify-content: center;
-    padding: 20px;
-    border: 3px solid var(--electric-blue);
-    box-shadow: 0 10px 30px rgba(0, 229, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 229, 255, 0.15);
 }
 
-.qris-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+.qris-container img {
+    width: 220px;
+    height: 220px;
     display: block;
+    object-fit: contain;
 }
 
-.qris-info {
-    text-align: center;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7);
-    margin-top: 10px;
+/* Responsive untuk QRIS */
+@media (max-width: 480px) {
+    .qris-container {
+        padding: 20px;
+        max-width: 250px;
+    }
+    
+    .qris-container img {
+        width: 200px;
+        height: 200px;
+    }
 }
 
-.qris-info i {
-    color: var(--electric-blue);
-    margin-right: 8px;
-}
-
-/* QRIS Fallback */
-.qris-fallback {
-    background: #fff;
-    border-radius: 20px;
-    padding: 30px;
-    text-align: center;
-}
-
-.qris-fallback-icon {
-    font-size: 4rem;
-    color: #ccc;
-    margin-bottom: 20px;
-}
-
-.qris-fallback p {
-    color: #666;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    margin-bottom: 10px;
+@media (max-width: 360px) {
+    .qris-container {
+        max-width: 220px;
+        padding: 15px;
+    }
+    
+    .qris-container img {
+        width: 180px;
+        height: 180px;
+    }
 }
 
 /* --- MODAL STYLES --- */
@@ -987,9 +968,8 @@ video {
         font-size: 0.7rem;
     }
     
-    .qris-wrapper {
-        width: 220px;
-        height: 220px;
+    .qris-container img {
+        width: 180px;
     }
     
     .dana-val {
@@ -1021,9 +1001,12 @@ video {
         width: 100%;
         justify-content: center;
     }
-    
-    .qris-wrapper {
-        width: 200px;
-        height: 200px;
-    }
-                                                }
+/* --- LOADING ANIMATION FOR IMAGES --- */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.qris-container img {
+    animation: fadeIn 0.5s ease-in-out;
+}
