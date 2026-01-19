@@ -5,6 +5,77 @@ let currentProduct = {
     quantity: 1
 };
 
+// Check QRIS image on page load
+document.addEventListener('DOMContentLoaded', function() {
+    checkQRISImage();
+    
+    // Event listener untuk quantity input
+    const quantityInput = document.getElementById('quantity');
+    if (quantityInput) {
+        quantityInput.addEventListener('input', function() {
+            let value = parseInt(this.value) || 1;
+            if (value < 1) value = 1;
+            if (value > 10) value = 10;
+            this.value = value;
+            currentProduct.quantity = value;
+            calculateTotal();
+        });
+    }
+    
+    // Event listener untuk klik di luar modal
+    const modal = document.getElementById('orderModal');
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    }
+    
+    // Event listener untuk QRIS modal
+    const qrisModal = document.getElementById('qrisFallbackModal');
+    if (qrisModal) {
+        qrisModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeQRISModal();
+            }
+        });
+    }
+    
+    // Event listener untuk video
+    const video = document.getElementById('mainVideo');
+    if (video) {
+        video.preload = 'auto';
+        video.playsInline = true;
+        video.setAttribute('webkit-playsinline', '');
+        video.setAttribute('playsinline', '');
+    }
+    
+    // Event listener untuk klik di manapun untuk trigger video sound
+    document.addEventListener('click', function() {
+        const video = document.getElementById('mainVideo');
+        if (video && video.paused) {
+            video.play().catch(e => {
+                console.log("Butuh interaksi untuk play video");
+            });
+        }
+    });
+});
+
+// Fungsi untuk check QRIS image
+function checkQRISImage() {
+    const qrisImg = document.getElementById('qrisImg');
+    if (qrisImg) {
+        qrisImg.onload = function() {
+            console.log("QRIS image loaded successfully");
+        };
+        qrisImg.onerror = function() {
+            console.log("QRIS image failed to load");
+            // Tidak otomatis tampilkan modal, biarkan user klik dulu
+        };
+    }
+}
+
 // Fungsi untuk skip loading awal
 function skipInitialLoading() {
     const loader = document.getElementById('initialLoader');
@@ -98,9 +169,14 @@ function orderProduct(productName, productPrice) {
     document.getElementById('orderModal').style.display = 'flex';
 }
 
-// Fungsi untuk menutup modal
+// Fungsi untuk menutup modal order
 function closeModal() {
     document.getElementById('orderModal').style.display = 'none';
+}
+
+// Fungsi untuk menutup modal QRIS
+function closeQRISModal() {
+    document.getElementById('qrisFallbackModal').style.display = 'none';
 }
 
 // Fungsi untuk mengubah quantity
@@ -147,7 +223,7 @@ function sendToTelegram() {
     );
     
     // Username Telegram Anda
-    const telegramUsername = 'd1kaan0tdev';
+    const telegramUsername = 'IsRealHamxyz';
     
     // Redirect ke Telegram
     window.open(`https://t.me/${telegramUsername}?text=${message}`, '_blank');
@@ -159,31 +235,79 @@ function sendToTelegram() {
     showNotification('✅ Order details sent to Telegram!');
 }
 
-// Fungsi untuk notifikasi
-function showNotification(message) {
-    const notification = document.createElement('div');
-    notification.textContent = message;
-    notification.style.cssText = `
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: var(--electric-blue);
-        color: #000;
-        padding: 12px 24px;
-        border-radius: 8px;
-        font-weight: 700;
-        z-index: 10000;
-        animation: slideUp 0.3s ease;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    `;
+// Fungsi untuk show QRIS fallback
+function showQRISFallback() {
+    document.getElementById('qrisFallbackModal').style.display = 'flex';
+}
+
+// Fungsi untuk generate temporary QRIS
+function generateQRISFallback() {
+    const qrisImg = document.getElementById('qrisImg');
     
-    document.body.appendChild(notification);
+    // Buat QRIS placeholder menggunakan API QR code
+    const qrText = 'https://t.me/IsRealHamxyz';
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrText)}&bgcolor=ffffff&color=000000`;
     
-    setTimeout(() => {
-        notification.style.animation = 'slideDown 0.3s ease';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
+    // Ganti src image dengan QR code baru
+    qrisImg.src = qrUrl;
+    qrisImg.alt = 'Generated QRIS Code';
+    
+    // Tutup modal
+    closeQRISModal();
+    
+    // Tampilkan notifikasi
+    showNotification('🔳 Temporary QRIS generated!');
+}
+
+// Fungsi untuk copy QRIS link
+function copyQRISLink() {
+    const qrisImg = document.getElementById('qrisImg');
+    const qrisUrl = qrisImg.src;
+    
+    // Buat temporary input untuk copy
+    const tempInput = document.createElement('input');
+    tempInput.value = qrisUrl;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    tempInput.setSelectionRange(0, 99999); // For mobile devices
+    
+    // Copy ke clipboard
+    navigator.clipboard.writeText(qrisUrl)
+        .then(() => {
+            showNotification('📋 QRIS link copied to clipboard!');
+        })
+        .catch(err => {
+            document.execCommand('copy');
+            showNotification('📋 QRIS link copied!');
+        });
+    
+    // Hapus temporary input
+    document.body.removeChild(tempInput);
+}
+
+// Fungsi untuk download QRIS
+function downloadQR() {
+    const qrisImg = document.getElementById('qrisImg');
+    
+    // Check if image is loaded
+    if (!qrisImg.complete || qrisImg.naturalWidth === 0) {
+        showNotification('⚠️ QRIS image not loaded!');
+        return;
+    }
+    
+    // Coba download
+    try {
+        const link = document.createElement('a');
+        link.href = qrisImg.src;
+        link.download = "QRIS_HAMXYZ.png";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showNotification('📁 QRIS downloaded successfully!');
+    } catch (error) {
+        console.error("Download error:", error);
+        showNotification('❌ Failed to download QRIS!');
+    }
 }
 
 // Fungsi untuk copy nomor DANA
@@ -198,58 +322,39 @@ function copyNum() {
         });
 }
 
-// Fungsi untuk download QRIS
-function downloadQR() {
-    const link = document.createElement('a');
-    link.href = document.getElementById('qrisImg').src;
-    link.download = "QRIS_HAMXYZ.png";
-    link.click();
-    showNotification('📁 QRIS berhasil diunduh!');
+// Fungsi untuk notifikasi
+function showNotification(message) {
+    // Hapus notifikasi lama jika ada
+    const oldNotifications = document.querySelectorAll('.custom-notification');
+    oldNotifications.forEach(notif => notif.remove());
+    
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    notification.className = 'custom-notification';
+    notification.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--electric-blue);
+        color: #000;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 700;
+        z-index: 10000;
+        animation: slideUp 0.3s ease;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        box-shadow: 0 5px 15px rgba(0, 229, 255, 0.3);
+        white-space: nowrap;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideDown 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
 }
-
-// Event listener untuk quantity input
-document.addEventListener('DOMContentLoaded', function() {
-    const quantityInput = document.getElementById('quantity');
-    if (quantityInput) {
-        quantityInput.addEventListener('input', function() {
-            let value = parseInt(this.value) || 1;
-            if (value < 1) value = 1;
-            if (value > 10) value = 10;
-            this.value = value;
-            currentProduct.quantity = value;
-            calculateTotal();
-        });
-    }
-    
-    // Event listener untuk klik di luar modal
-    const modal = document.getElementById('orderModal');
-    if (modal) {
-        modal.addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
-        });
-    }
-    
-    // Event listener untuk video
-    const video = document.getElementById('mainVideo');
-    if (video) {
-        video.preload = 'auto';
-        video.playsInline = true;
-        video.setAttribute('webkit-playsinline', '');
-        video.setAttribute('playsinline', '');
-    }
-    
-    // Event listener untuk klik di manapun untuk trigger video sound
-    document.addEventListener('click', function() {
-        const video = document.getElementById('mainVideo');
-        if (video && video.paused) {
-            video.play().catch(e => {
-                console.log("Butuh interaksi untuk play video");
-            });
-        }
-    });
-});
 
 // Tambahkan style untuk animasi notifikasi
 const style = document.createElement('style');
