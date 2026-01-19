@@ -1,1 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D1kaa | Payment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <div class="top-nav">
+        <span class="nav-label">DIGITALS PAYMENT</span>
+        <span class="nav-divider">/</span>
+        <span class="nav-brand">Chives D1kaa</span>
+    </div>
+
+    <!-- Loading Screen Hanya untuk Awal (Ada Skip) -->
+    <div id="initialLoader">
+        <div class="spin-outer">
+            <div class="spin-inner"></div>
+        </div>
+        <div class="loading-text">LOADING</div>
+        <button class="skip-btn" onclick="skipInitialLoading()">SKIP LOADING</button>
+    </div>
+
+    <!-- Loading Screen untuk Perpindahan Halaman (Tidak Ada Skip) -->
+    <div id="pageLoader">
+        <div class="spin-outer">
+            <div class="spin-inner"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <div id="home" class="page active">
+            <div class="profile-wrapper">
+                <div class="profile-pic">
+                    <img src="assets/profile.jpg" alt="Profile">
+                    <div class="verified-badge">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <h1 class="profile-name">Chives D1kaa</h1>
+            <a href="https://t.me/@d1kaan0tdev" class="mono-link">@d1kaan0tdev</a>
+
+            <div class="video-wrapper">
+                <video id="mainVideo" autoplay loop playsinline muted>
+                    <source src="assets/video.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <!-- Payment Header -->
+            <div class="payment-header">
+                <div class="payment-label-left">CHOSE PAYMENT METHODS</div>
+                <div class="payment-label-right">ALL PAYMENT</div>
+            </div>
+
+            <div class="btn-list">
+                <button class="btn btn-blue" onclick="navTo('danaPage')">
+                    <i class="fa-solid fa-wallet"></i> DANA PAYMENT
+                </button>
+                <button class="btn" onclick="navTo('qrisPage')">
+                    <i class="fa-solid fa-qrcode"></i> QRIS INSTANT
+                </button>
+            </div>
+
+            <!-- Products Header -->
+            <div class="products-header">
+                <div class="products-label-left">DIGITAL PRODUCTS</div>
+                <div class="products-label-right">INSTANT DELIVERY</div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid">
+                <!-- Pterodactyl Panel Header -->
+                <div class="product-card category-header">
+                    <div class="product-icon">
+                        <i class="fas fa-dragon"></i>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-name">PTERODACTYL PANEL</h3>
+                        <p class="product-specs"></p>
+                        <div class="product-price">
+                            <span class="price-category">PILIH KAPASITAS RAM:</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RAM Options -->
+                <div class="ram-grid">
+                    <!-- RAM 1GB -->
+                    <button class="ram-option" onclick="orderProduct('Pterodactyl Panel 1GB RAM', 1000)">
+                        <span class="ram-amount">1 GB</span>
+                        <span class="ram-price">Rp 1.000</span>
+                    </button>
+                    
+                    <!-- RAM 2GB -->
+                    <button class="ram-option" onclick="orderProduct('Pterodactyl Panel 2GB RAM', 2000)">
+                        <span class="ram-amount">2 GB</span>
+                        <span class="ram-price">Rp 2.000</span>
+                    </button>
+                    
+                    <!-- RAM 3GB -->
+                    <button class="ram-option" onclick="orderProduct('Pterodactyl Panel 3GB RAM', 3000)">
+                        <span class="ram-amount">3 GB</span>
+                        <span class="ram-price">Rp 3.000</span>
+                    </button>
+                    
+                    <!-- RAM 4GB -->
+                    <button class="ram-option" onclick="orderProduct('Pterodactyl Panel 4GB RAM', 4000)">
+                        <span class="ram-amount">4 GB</span>
+                        <span class="ram-price">Rp 4.000</span>
+                    </button>
+                    
+                    <!-- RAM 5GB -->
+                    <button class="ram-option" onclick="orderProduct('Pterodactyl Panel 5GB RAM', 5000)">
+                        <span class="ram-amount">5 GB</span>
+                        <span class="ram-price">Rp 5.000</span>
+                    </button>
+                    
+                    <!-- RAM 6GB -->
+                    <button class="ram-option" onclick="orderProduct('Pterodactyl Panel 6GB RAM', 6000)">
+                        <span class="ram-amount">6 GB</span>
+                        <span class="ram-price">Rp 6.000</span>
+                    </button>
+                    
+                    <!-- RAM 7GB -->
+                    <button class="ram-option" onclick="orderProduct('Pterodactyl Panel 7GB RAM', 7000)">
+                        <span class="ram-amount">7 GB</span>
+                        <span class="ram-price">Rp 7.000</span>
+                    </button>
+                    
+                    <!-- RAM 8GB -->
+                    <button class="ram-option" onclick="orderProduct('Pterodactyl Panel 8GB RAM', 8000)">
+                        <span class="ram-amount">8 GB</span>
+                        <span class="ram-price">Rp 8.000</span>
+                    </button>
+                    
+                    <!-- RAM 9GB -->
+                    <button class="ram-option" onclick="orderProduct('Pterodactyl Panel 9GB RAM', 9000)">
+                        <span class="ram-amount">9 GB</span>
+                        <span class="ram-price">Rp 9.000</span>
+                    </button>
+                    
+                    <!-- RAM 10GB -->
+                    <button class="ram-option" onclick="orderProduct('Pterodactyl Panel 10GB RAM', 10000)">
+                        <span class="ram-amount">10 GB</span>
+                        <span class="ram-price">Rp 10.000</span>
+                    </button>
+                    
+                    <!-- RAM Unlimited -->
+                    <button class="ram-option unlimited" onclick="orderProduct('Pterodactyl Panel UNLIMITED RAM', 50000)">
+                        <span class="ram-amount">UNLIMITED</span>
+                        <span class="ram-price">Rp 11.000</span>
+                    </button>
+                </div>
+
+                <!-- Telegram Script Bot Header -->
+                <div class="product-card category-header">
+                    <div class="product-icon">
+                        <i class="fab fa-telegram"></i>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-name">TELEGRAM SCRIPT BOT</h3>
+                        <p class="product-specs">Auto Order & Create Panel</p>
+                        <div class="product-price">
+                            <span class="price-category">PILIH SCRIPT:</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Telegram Script Products -->
+                <div class="product-card" data-product="scauto" data-price="10000">
+                    <div class="product-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-name">SC AUTO ORDER</h3>
+                        <p class="product-specs">Script bot auto order via Telegram</p>
+                        <div class="product-price">
+                            <span class="price">Rp 10.000</span>
+                            <span class="duration">/script</span>
+                        </div>
+                    </div>
+                    <button class="product-order-btn" onclick="orderProduct('Script Auto Order Telegram', 10000)">
+                        <i class="fas fa-shopping-cart"></i> ORDER
+                    </button>
+                </div>
+
+                <div class="product-card" data-product="scpanel" data-price="10000">
+                    <div class="product-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-name">SC CREATE PANEL</h3>
+                        <p class="product-specs">Script create panel via Telegram</p>
+                        <div class="product-price">
+                            <span class="price">Rp 10.000</span>
+                            <span class="duration">/script</span>
+                        </div>
+                    </div>
+                    <button class="product-order-btn" onclick="orderProduct('Script Create Panel Telegram', 10000)">
+                        <i class="fas fa-shopping-cart"></i> ORDER
+                    </button>
+                </div>
+            </div>
+
+            <!-- Footer Credits -->
+            <div class="footer-credits">
+                <div class="dev-label">WEB DEVELOPED BY</div>
+                <div class="dev-name">Chives D1kaa</div>
+            </div>
+        </div>
+
+        <div id="danaPage" class="page">
+            <!-- Tombol back di kiri dalam konten -->
+            <div class="back-btn-content">
+                <button class="btn" onclick="navTo('home')">
+                    <i class="fas fa-arrow-left"></i> BACK
+                </button>
+            </div>
+            
+            <div class="pay-card">
+                <i class="fa-solid fa-fingerprint" style="font-size: 2.5rem; color: var(--electric-blue); margin-bottom: 15px;"></i>
+                <h3 style="font-size: 0.9rem; opacity: 0.6; letter-spacing: 2px;">DANA RECEIVER</h3>
+                <span class="dana-val">0895-3036-5282</span>
+                <p style="font-size: 0.8rem; font-weight: 700;">A/N: Nur*h</p>
+            </div>
+            <br>
+            <div class="btn-list">
+                <button class="btn btn-blue" onclick="copyNum()">COPY NUMBER</button>
+            </div>
+
+            <!-- Footer Credits -->
+            <div class="footer-credits">
+                <div class="dev-label">WEB DEVELOPED BY</div>
+                <div class="dev-name">Chives D1kaa</div>
+            </div>
+        </div>
+
+        <div id="qrisPage" class="page">
+            <!-- Tombol back di kiri dalam konten -->
+            <div class="back-btn-content">
+                <button class="btn" onclick="navTo('home')">
+                    <i class="fas fa-arrow-left"></i> BACK
+                </button>
+            </div>
+            
+            <div class="qris-container">
+                <img id="qrisImg" src="assets/qris.png">
+            </div>
+            <div class="btn-list">
+                <button class="btn btn-blue" onclick="downloadQR()">SAVE QRIS</button>
+            </div>
+
+            <!-- Footer Credits -->
+            <div class="footer-credits">
+                <div class="dev-label">WEB DEVELOPED BY</div>
+                <div class="dev-name">Chices D1kaa</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Order Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>ORDER DETAILS</h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="product-info">
+                    <h4 id="modalProductName">-</h4>
+                    <p id="modalProductPrice">Rp 0</p>
+                </div>
+                
+                <div class="quantity-selector">
+                    <label>Quantity:</label>
+                    <div class="quantity-control">
+                        <button class="qty-btn" onclick="changeQuantity(-1)">-</button>
+                        <input type="number" id="quantity" value="1" min="1" max="10">
+                        <button class="qty-btn" onclick="changeQuantity(1)">+</button>
+                    </div>
+                </div>
+                
+                <div class="total-section">
+                    <p>Total Price:</p>
+                    <h3 id="totalPrice">Rp 0</h3>
+                </div>
+                
+                <button class="btn btn-blue btn-full" onclick="sendToTelegram()">
+                    <i class="fab fa-telegram"></i> ORDER VIA TELEGRAM
+                </button>
+                
+                <p class="note-text">You will be redirected to Telegram with pre-filled order details</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
